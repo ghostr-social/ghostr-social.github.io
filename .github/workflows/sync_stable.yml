@@ -1,0 +1,67 @@
+name: Sync stable Android release
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stable-android-release
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out update site
+        uses: actions/checkout@v4
+
+      - name: Download latest complete release metadata
+        run: |
+          curl --fail --location --retry 3 \
+            --output candidate.json \
+            https://github.com/ghostr-social/app/releases/latest/download/stable.json
+
+      - name: Validate release contract and monotonic version
+        run: |
+          jq -e '
+            . as $release |
+            .schemaVersion == 1 and
+            .namespace == "ghostr.social" and
+            .packageName == "app.ghostr" and
+            .channel == "stable" and
+            (.versionName | type == "string" and length > 0) and
+            (.versionCode | type == "number" and . > 0 and floor == .) and
+            .releaseUrl == (
+              "https://github.com/ghostr-social/app/releases/tag/v" +
+              $release.versionName
+            ) and
+            (.artifacts | type == "array" and length == 3) and
+            ([.artifacts[].abi] | sort) ==
+              ["arm64-v8a", "armeabi-v7a", "x86_64"] and
+            all(.artifacts[];
+              (.size | type == "number" and . > 0) and
+              (.sha256 | test("^[0-9a-f]{64}$")) and
+              .url == (
+                "https://github.com/ghostr-social/app/releases/download/v" +
+                $release.versionName + "/ghostr-v" +
+                $release.versionName + "-" + .abi + ".apk"
+              )
+            )
+          ' candidate.json >/dev/null
+          current=$(jq -r '.versionCode // 0' stable.json 2>/dev/null || echo 0)
+          candidate=$(jq -r '.versionCode' candidate.json)
+          test "$candidate" -ge "$current"
+
+      - name: Publish changed metadata
+        run: |
+          if cmp -s candidate.json stable.json; then exit 0; fi
+          mv candidate.json stable.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stable.json
+          git commit -m "Publish Ghostr v$(jq -r .versionName stable.json)"
+          git push origin main
