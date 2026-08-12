@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: stable-android-release
@@ -15,6 +17,9 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out update site
         uses: actions/checkout@v5
@@ -77,3 +82,20 @@ jobs:
           git add stable.json
           git commit -m "Publish Ghostr v$(jq -r .versionName stable.json)"
           git push origin main
+
+      - name: Prepare update site
+        run: |
+          mkdir _site
+          cp stable.json _site/stable.json
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload update site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: Deploy update site
+        id: deployment
+        uses: actions/deploy-pages@v4
