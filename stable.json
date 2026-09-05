@@ -3,13 +3,13 @@
   "namespace":"ghostr.social",
   "packageName":"app.ghostr",
   "channel":"stable",
-  "versionName":"0.0.34",
-  "versionCode":34,
-  "publishedAt":"2026-09-05T13:44:15Z",
-  "releaseUrl":"https://github.com/ghostr-social/app/releases/tag/v0.0.34",
+  "versionName":"0.0.35",
+  "versionCode":35,
+  "publishedAt":"2026-09-05T15:54:08Z",
+  "releaseUrl":"https://github.com/ghostr-social/app/releases/tag/v0.0.35",
   "artifacts":[
-    {"abi":"arm64-v8a","url":"https://github.com/ghostr-social/app/releases/download/v0.0.34/ghostr-v0.0.34-arm64-v8a.apk","size":44789065,"sha256":"d4aedf24ada0975db8922220ba3e6dd81f5903d6523e9f39457d4a5f3fca283d"},
-    {"abi":"armeabi-v7a","url":"https://github.com/ghostr-social/app/releases/download/v0.0.34/ghostr-v0.0.34-armeabi-v7a.apk","size":36152465,"sha256":"20b404f370fb604a704f04150a2993b8a532839505eb1e97853310fa515ef87f"},
-    {"abi":"x86_64","url":"https://github.com/ghostr-social/app/releases/download/v0.0.34/ghostr-v0.0.34-x86_64.apk","size":48321559,"sha256":"0c5ae1622a0a28356521c0b999761fd32800c7c53ad44e978b6c73d7275d73e7"}
+    {"abi":"arm64-v8a","url":"https://github.com/ghostr-social/app/releases/download/v0.0.35/ghostr-v0.0.35-arm64-v8a.apk","size":44789065,"sha256":"cfd8d1aee71f16777fc3f88aa1a6f39c6e8c85d2e47e9db5cde48e69eb8ad73c"},
+    {"abi":"armeabi-v7a","url":"https://github.com/ghostr-social/app/releases/download/v0.0.35/ghostr-v0.0.35-armeabi-v7a.apk","size":36152465,"sha256":"e71e84096b958e4b72eb474340327621e03dbb0a4082735a62aa6baebe7996d4"},
+    {"abi":"x86_64","url":"https://github.com/ghostr-social/app/releases/download/v0.0.35/ghostr-v0.0.35-x86_64.apk","size":48321559,"sha256":"3d135b3b78ff2ec7f0ef5307209b2c48ce251c681b485376195f3d1619a86cd9"}
   ]
 }
